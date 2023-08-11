@@ -1,14 +1,16 @@
 'use strict';
 
-///////////////////////////////////////
-// Modal window
-
 const modalWindow = document.querySelector('.modal-window');
 const overlay = document.querySelector('.overlay');
 const btnCloseModalWindow = document.querySelector('.btn--close-modal-window');
 const btnsOpenModalWindow = document.querySelectorAll(
   '.btn--show-modal-window'
 );
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+///////////////////////////////////////
+// Modal window
 
 const openModalWindow = function (e) {
   e.preventDefault();
@@ -31,4 +33,52 @@ document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape' && !modalWindow.classList.contains('hidden')) {
     closeModalWindow();
   }
+});
+
+//////////////////////////
+// Smooth page button
+
+btnScrollTo.addEventListener('click', function () {
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
+
+// 1. Adding an event handler for a common parent.
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+  const href = e.target.getAttribute('href');
+
+  // 2. Identify the "target" element.
+  if (e.target.classList.contains('nav__link')) {
+    document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+// Tabs
+
+const operationsContentActive = document.querySelector(
+  '.operations__content--active'
+);
+
+const operationsContent = document.querySelector('.operations__content');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabContainer = document.querySelector('.operations__tab-container');
+const tabContents = document.querySelectorAll('.operations__content');
+
+tabContainer.addEventListener('click', function (e) {
+  const clickedButton = e.target.closest('.operations__tab');
+
+  // Guard clause
+  if (!clickedButton) return;
+
+  // Active tab
+  tabs.forEach((tab) => tab.classList.remove('operations__tab--active'));
+  clickedButton.classList.add('operations__tab--active');
+
+  // Active content
+  tabContents.forEach((content) =>
+    content.classList.remove('operations__content--active')
+  );
+  document
+    .querySelector(`.operations__content--${clickedButton.dataset.tab}`)
+    .classList.add('operations__content--active');
 });
