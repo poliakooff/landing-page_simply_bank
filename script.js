@@ -8,6 +8,14 @@ const btnsOpenModalWindow = document.querySelectorAll(
 );
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
+const operationsContentActive = document.querySelector(
+  '.operations__content--active'
+);
+const operationsContent = document.querySelector('.operations__content');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabContainer = document.querySelector('.operations__tab-container');
+const tabContents = document.querySelectorAll('.operations__content');
+const nav = document.querySelector('.nav');
 
 ///////////////////////////////////////
 // Modal window
@@ -55,15 +63,6 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 
 // Tabs
 
-const operationsContentActive = document.querySelector(
-  '.operations__content--active'
-);
-
-const operationsContent = document.querySelector('.operations__content');
-const tabs = document.querySelectorAll('.operations__tab');
-const tabContainer = document.querySelector('.operations__tab-container');
-const tabContents = document.querySelectorAll('.operations__content');
-
 tabContainer.addEventListener('click', function (e) {
   const clickedButton = e.target.closest('.operations__tab');
 
@@ -82,3 +81,27 @@ tabContainer.addEventListener('click', function (e) {
     .querySelector(`.operations__content--${clickedButton.dataset.tab}`)
     .classList.add('operations__content--active');
 });
+
+// Fade animation on the navigation bar
+
+const navLinksHoverAnimation = function (e, opacity) {
+  if (e.target.classList.contains('nav__link')) {
+    const linkOver = e.target;
+    const siblingLinks = linkOver
+      .closest('.nav__links')
+      .querySelectorAll('.nav__link');
+    const logo = linkOver.closest('.nav').querySelector('img');
+    const logoText = linkOver.closest('.nav').querySelector('.nav__text');
+
+    siblingLinks.forEach((el) => {
+      if (el !== linkOver) el.style.opacity = this;
+    });
+    logo.style.opacity = this;
+    logoText.style.opacity = this;
+  }
+};
+
+// Working with arguments using the bind() / this function
+nav.addEventListener('mouseover', navLinksHoverAnimation.bind(0.4));
+
+nav.addEventListener('mouseout', navLinksHoverAnimation.bind(1));
