@@ -17,9 +17,7 @@ const tabContainer = document.querySelector('.operations__tab-container');
 const tabContents = document.querySelectorAll('.operations__content');
 const nav = document.querySelector('.nav');
 
-///////////////////////////////////////
 // Modal window
-
 const openModalWindow = function (e) {
   e.preventDefault();
   modalWindow.classList.remove('hidden');
@@ -43,9 +41,7 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-//////////////////////////
 // Smooth page button
-
 btnScrollTo.addEventListener('click', function () {
   section1.scrollIntoView({ behavior: 'smooth' });
 });
@@ -62,7 +58,6 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 });
 
 // Tabs
-
 tabContainer.addEventListener('click', function (e) {
   const clickedButton = e.target.closest('.operations__tab');
 
@@ -83,7 +78,6 @@ tabContainer.addEventListener('click', function (e) {
 });
 
 // Fade animation on the navigation bar
-
 const navLinksHoverAnimation = function (e, opacity) {
   if (e.target.classList.contains('nav__link')) {
     const linkOver = e.target;
@@ -101,7 +95,20 @@ const navLinksHoverAnimation = function (e, opacity) {
   }
 };
 
-// Working with arguments using the bind() / this function
-nav.addEventListener('mouseover', navLinksHoverAnimation.bind(0.4));
-
-nav.addEventListener('mouseout', navLinksHoverAnimation.bind(1));
+// Sticky navigation - Intersection Observer API
+const header = document.querySelector('.header');
+const navHeight = Math.trunc(nav.getBoundingClientRect().height);
+const getStickyNav = function (entries) {
+  const entry = entries[0];
+  if (!entry.isIntersecting) {
+    nav.classList.add('sticky');
+  } else {
+    nav.classList.remove('sticky');
+  }
+};
+const observer = new IntersectionObserver(getStickyNav, {
+  root: null,
+  trashold: 0,
+  rootMargin: `-${navHeight}px`,
+});
+observer.observe(header);
